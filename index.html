@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5b3a24">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Absensi Sam's Coffee</title>
+<style>
+:root{
+  --kopi:#5b3a24; --kopi2:#7a5236; --krem:#f6efe7; --krem2:#ede2d4; --teks:#2b1d14; --abu:#7d6e63;
+  --hijau:#2e7d32; --hijau-bg:#e6f4e7; --merah:#c62828; --merah-bg:#fde8e8; --kuning:#9a6a00; --kuning-bg:#fff4d6;
+  --biru:#1f5fa8; --biru-bg:#e7f0fb; --putih:#fff; --garis:#e3d6c6;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--krem);color:var(--teks);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.45}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+body.no-tab{padding-bottom:0}
+header#top{position:sticky;top:0;z-index:5;background:var(--kopi);color:#fff;padding:12px 16px calc(12px) 16px;padding-top:calc(12px + env(safe-area-inset-top));display:flex;align-items:center;gap:10px}
+header#top img{width:34px;height:34px;border-radius:8px}
+header#top .judul{font-weight:700;font-size:18px;flex:1}
+header#top .sub{font-size:13px;opacity:.85}
+main{padding:14px 14px 24px;max-width:640px;margin:0 auto}
+h2{font-size:20px;margin:6px 0 12px}
+h3{font-size:17px;margin:16px 0 8px}
+.kartu{background:var(--putih);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(60,30,10,.08);border:1px solid var(--garis)}
+.kartu.lembut{background:var(--krem2);box-shadow:none}
+.muted{color:var(--abu);font-size:14px}
+.besar{font-size:22px;font-weight:700}
+.baris{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.kol{display:flex;flex-direction:column;gap:8px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;border:0;border-radius:12px;font-size:18px;font-weight:700;padding:12px 16px;cursor:pointer;background:var(--kopi);color:#fff;text-decoration:none;font-family:inherit}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.45}
+.btn.besar-sekali{min-height:76px;font-size:22px}
+.btn.hijau{background:var(--hijau)} .btn.merah{background:var(--merah)} .btn.biru{background:var(--biru)}
+.btn.oranye{background:#d9730d}
+.btn.garis{background:#fff;color:var(--kopi);border:2px solid var(--kopi)}
+.btn.kecil{min-height:42px;font-size:15px;padding:8px 12px;border-radius:10px;width:auto}
+.btn.wa{background:#1fa855}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.grid2>*{min-width:0}
+input,select,textarea{min-width:0;max-width:100%}
+input[type=date],input[type=time],input[type=datetime-local]{-webkit-appearance:none;appearance:none;min-height:50px}
+.chip{display:inline-block;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:700;background:var(--krem2);color:var(--kopi);white-space:nowrap}
+.chip.hijau{background:var(--hijau-bg);color:var(--hijau)} .chip.merah{background:var(--merah-bg);color:var(--merah)}
+.chip.kuning{background:var(--kuning-bg);color:var(--kuning)} .chip.biru{background:var(--biru-bg);color:var(--biru)}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input,select,textarea{width:100%;font-size:18px;padding:12px;border:1.5px solid var(--garis);border-radius:10px;background:#fff;color:var(--teks);font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--kopi)}
+textarea{min-height:90px;resize:vertical}
+.pesan{padding:12px;border-radius:10px;margin:10px 0;font-size:15px}
+.pesan.merah{background:var(--merah-bg);color:var(--merah)} .pesan.hijau{background:var(--hijau-bg);color:var(--hijau)}
+.pesan.kuning{background:var(--kuning-bg);color:var(--kuning)} .pesan.biru{background:var(--biru-bg);color:var(--biru)}
+nav#tab{position:fixed;left:0;right:0;bottom:0;z-index:6;background:#fff;border-top:1px solid var(--garis);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav#tab button{flex:1;border:0;background:none;padding:8px 2px 10px;font-size:12px;color:var(--abu);display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit;position:relative}
+nav#tab button .ik{font-size:24px;line-height:1}
+nav#tab button.aktif{color:var(--kopi);font-weight:700}
+nav#tab .bdg{position:absolute;top:4px;right:calc(50% - 22px);background:var(--merah);color:#fff;border-radius:999px;font-size:11px;min-width:18px;padding:0 5px;font-weight:700}
+.daftar .item{padding:12px 0;border-bottom:1px solid var(--garis)}
+.daftar .item:last-child{border-bottom:0}
+.seg{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.seg button{flex:0 0 auto;border:1.5px solid var(--kopi);background:#fff;color:var(--kopi);border-radius:999px;padding:8px 14px;font-size:15px;font-weight:700;font-family:inherit}
+.seg button.aktif{background:var(--kopi);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+th,td{border:1px solid var(--garis);padding:6px 6px;text-align:left;vertical-align:top}
+th{background:var(--krem2);font-size:13px}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* lapisan modal absen */
+#absen{position:fixed;inset:0;z-index:20;background:#1b120c;color:#fff;display:none;flex-direction:column}
+#absen.buka{display:flex}
+#absen .atas{padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));display:flex;align-items:center;gap:10px}
+#absen .atas .judul{font-size:20px;font-weight:700;flex:1}
+#absen .tutup{background:none;border:0;color:#fff;font-size:30px;line-height:1;padding:4px 8px}
+#absen .kamera{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000}
+#absen video,#absen img.hasil{max-width:100%;max-height:100%;object-fit:contain}
+#absen video{transform:scaleX(-1)}
+#absen .bawah{padding:12px 16px calc(16px + env(safe-area-inset-bottom));background:#1b120c}
+#absen .info{font-size:15px;margin-bottom:10px;line-height:1.5}
+#absen .info b{font-size:17px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:#888;vertical-align:middle}
+.dot.hijau{background:#4caf50}.dot.merah{background:#ef5350}.dot.kuning{background:#ffca28}
+/* dialog */
+#dlg{position:fixed;inset:0;z-index:30;background:rgba(20,10,5,.55);display:none;align-items:flex-end;justify-content:center}
+#dlg.buka{display:flex}
+#dlg .isi{background:#fff;width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:92vh;overflow-y:auto}
+@media(min-width:600px){#dlg{align-items:center}#dlg .isi{border-radius:18px}}
+#muat{position:fixed;inset:0;z-index:40;background:rgba(255,255,255,.75);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;font-weight:700;color:var(--kopi)}
+#muat.buka{display:flex}
+.putar{width:46px;height:46px;border:5px solid var(--krem2);border-top-color:var(--kopi);border-radius:50%;animation:putar 0.9s linear infinite}
+@keyframes putar{to{transform:rotate(360deg)}}
+.hasil-ikon{font-size:64px;text-align:center;line-height:1.1}
+.foto-detail{width:100%;border-radius:10px;margin-top:8px}
+.hanya-cetak{display:none}
+@media print{
+  header#top,nav#tab,.no-print,.btn,.seg{display:none!important}
+  body{background:#fff;padding:0}
+  main{max-width:none;padding:0}
+  .kartu{box-shadow:none;border:0;padding:0}
+  .hanya-cetak{display:block}
+  table{font-size:11px}
+}
+</style>
+</head>
+<body>
+<header id="top">
+  <img src="icon-192.png" alt="">
+  <div style="flex:1">
+    <div class="judul" id="judul-app">Absensi Sam's Coffee</div>
+    <div class="sub" id="sub-app"></div>
+  </div>
+</header>
+<main id="app"></main>
+<nav id="tab"></nav>
+
+<div id="absen">
+  <div class="atas"><div class="judul" id="absen-judul">Absen</div><button class="tutup" onclick="tutupAbsen()" aria-label="Tutup">✕</button></div>
+  <div class="kamera" id="absen-kamera"></div>
+  <div class="bawah">
+    <div class="info" id="absen-info">Menyiapkan kamera dan GPS…</div>
+    <div id="absen-tombol"></div>
+  </div>
+</div>
+<div id="dlg"><div class="isi" id="dlg-isi"></div></div>
+<div id="muat"><div class="putar"></div><div id="muat-teks">Memuat…</div></div>
+
+<script>
+/* =====================================================================
+ *  APLIKASI ABSENSI SAM'S COFFEE & EATERY — TAMPILAN (PWA)
+ *  Versi 1.0
+ * ===================================================================== */
+const API_URL = 'https://script.google.com/macros/s/AKfycbwIZ2uOh94wJIUzUbN3aqiSJAgz9L4tGW2N9bg0Gku7BkiETL1Oj1cTYTu_9fcwBgVO4Q/exec';
+const VERSI = '1.0';
+const MAKS_FOTO_KB = 200;
+
+/* ---------- penyimpanan di HP ---------- */
+function ls(k){ try{ return localStorage.getItem('abs_'+k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ if(v===null||v===undefined) localStorage.removeItem('abs_'+k); else localStorage.setItem('abs_'+k, typeof v==='string'?v:JSON.stringify(v)); }catch(e){} }
+function lsJson(k){ try{ return JSON.parse(ls(k)||'null'); }catch(e){ return null; } }
+
+const S = {
+  token: ls('token'), profil: lsJson('profil'), config: lsJson('config') || {},
+  offset: 0, tab: null, status: null, karyawan: null, data: {}, pasang: null
+};
+
+/* ---------- utilitas ---------- */
+function esc(s){ return String(s===undefined||s===null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function $(id){ return document.getElementById(id); }
+function pad(n){ return ('0'+n).slice(-2); }
+function sekarang(){ return new Date(Date.now()+S.offset); }
+function wib(d){ return new Date(d.getTime()+7*3600000); }
+function tglWIB(d){ return wib(d||sekarang()).toISOString().slice(0,10); }
+function jamWIB(d){ const x=wib(d||sekarang()); return pad(x.getUTCHours())+':'+pad(x.getUTCMinutes()); }
+function jamDetikWIB(d){ const x=wib(d||sekarang()); return jamWIB(d)+':'+pad(x.getUTCSeconds()); }
+function tambahHari(t,n){ const d=new Date(t+'T12:00:00Z'); d.setUTCDate(d.getUTCDate()+n); return d.toISOString().slice(0,10); }
+const HARI=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const BULAN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+function tglPanjang(t){ if(!t) return ''; const d=new Date(t.slice(0,10)+'T12:00:00Z'); return HARI[d.getUTCDay()]+', '+d.getUTCDate()+' '+BULAN[d.getUTCMonth()]+' '+d.getUTCFullYear(); }
+function tglPendek(t){ if(!t) return ''; const d=new Date(t.slice(0,10)+'T12:00:00Z'); return HARI[d.getUTCDay()].slice(0,3)+' '+d.getUTCDate()+' '+BULAN[d.getUTCMonth()].slice(0,3); }
+function jarakMeter(lat1,lng1,lat2,lng2){ const R=6371000,r=Math.PI/180; const dLat=(lat2-lat1)*r,dLng=(lng2-lng1)*r; const a=Math.sin(dLat/2)**2+Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dLng/2)**2; return 2*R*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); }
+function hitungJam(m,s){ const menit=Math.floor((s-m)/60000); return menit<=0?0:Math.floor(menit/30)*0.5; }
+function parseDT(s){ s=String(s||'').trim().replace(' ','T'); if(!s) return null; if(s.length===16) s+=':00'; return new Date(s+'+07:00'); }
+function keDTLocal(s){ return String(s||'').replace(' ','T').slice(0,16); }
+function chipStatus(st){
+  st=String(st||'');
+  let w='';
+  if(/Tepat|Normal|Disetujui|Tervalidasi|Diizinkan\)|Hadir$|Selesai Lembur|Mulai Lembur/.test(st)) w='hijau';
+  if(/Terlambat|Menunggu|Belum|Berlangsung|Tanpa Jadwal|Izin|Sakit|Cuti/.test(st)) w='kuning';
+  if(/Ditolak|Tidak|Pulang Cepat - |Tidak Hadir/.test(st)) w='merah';
+  if(/OFF/.test(st)) w='biru';
+  return '<span class="chip '+w+'">'+esc(st||'-')+'</span>';
+}
+
+/* ---------- komunikasi ke server ---------- */
+async function api(aksi, data){
+  const body = JSON.stringify(Object.assign({ aksi: aksi, token: S.token }, data||{}));
+  let res;
+  try { res = await fetch(API_URL, { method:'POST', body: body, redirect:'follow' }); }
+  catch(e){ throw new Error('Tidak bisa terhubung ke server. Periksa sinyal / paket data, lalu coba lagi.'); }
+  let j;
+  try { j = await res.json(); } catch(e){ throw new Error('Jawaban server tidak dikenali. Coba lagi sebentar.'); }
+  if(!j.ok){
+    const e = new Error(j.pesan || 'Terjadi kesalahan.'); e.kode = j.kode;
+    if(j.kode==='LOGIN'){ keluarLokal(); setTimeout(render,0); }
+    if(j.kode==='GANTI_PIN' && S.profil){ S.profil.wajibGantiPin=true; lsSet('profil',S.profil); setTimeout(render,0); }
+    throw e;
+  }
+  return j.data;
+}
+async function sinkronWaktu(){
+  try{ const t0=Date.now(); const r=await api('waktu'); const t1=Date.now(); S.offset = r.ms - Math.round((t0+t1)/2); }catch(e){}
+}
+
+/* ---------- lapisan muat, dialog ---------- */
+function muat(teks){ $('muat-teks').textContent=teks||'Memuat…'; $('muat').classList.add('buka'); }
+function selesaiMuat(){ $('muat').classList.remove('buka'); }
+let _dlgResolve=null;
+function bukaDialog(html){ $('dlg-isi').innerHTML=html; $('dlg').classList.add('buka'); }
+function tutupDialog(v){ $('dlg').classList.remove('buka'); const r=_dlgResolve; _dlgResolve=null; if(r) r(v); }
+function pesanBox(teks, jenis, judul){
+  return new Promise(res=>{
+    _dlgResolve=res;
+    const ikon = jenis==='error'?'⚠️':(jenis==='ok'?'✅':'ℹ️');
+    bukaDialog('<div class="hasil-ikon">'+ikon+'</div>'+(judul?'<h2 style="text-align:center">'+esc(judul)+'</h2>':'')+
+      '<p style="font-size:18px;white-space:pre-line;text-align:center">'+esc(teks)+'</p>'+
+      '<button class="btn" onclick="tutupDialog(true)">OK</button>');
+  });
+}
+function konfirmasi(teks, yaTeks, warna){
+  return new Promise(res=>{
+    _dlgResolve=res;
+    bukaDialog('<p style="font-size:18px;white-space:pre-line">'+esc(teks)+'</p><div class="grid2">'+
+      '<button class="btn garis" onclick="tutupDialog(false)">Batal</button>'+
+      '<button class="btn '+(warna||'')+'" onclick="tutupDialog(true)">'+esc(yaTeks||'Ya')+'</button></div>');
+  });
+}
+function mintaTeks(judul, keterangan, placeholder, wajib){
+  return new Promise(res=>{
+    _dlgResolve=res;
+    bukaDialog('<h2>'+esc(judul)+'</h2>'+(keterangan?'<p class="muted" style="white-space:pre-line">'+esc(keterangan)+'</p>':'')+
+      '<textarea id="dlg-teks" placeholder="'+esc(placeholder||'')+'"></textarea><div id="dlg-err"></div>'+
+      '<div class="grid2" style="margin-top:10px"><button class="btn garis" onclick="tutupDialog(null)">Batal</button>'+
+      '<button class="btn" onclick="_kirimTeks('+(wajib?1:0)+')">Lanjut</button></div>');
+    setTimeout(()=>{ const t=$('dlg-teks'); if(t) t.focus(); },200);
+  });
+}
+function _kirimTeks(wajib){
+  const v=($('dlg-teks').value||'').trim();
+  if(wajib && v.length<3){ $('dlg-err').innerHTML='<div class="pesan merah">Mohon diisi dengan jelas.</div>'; return; }
+  tutupDialog(v);
+}
+function tombolWA(teks){
+  const k=(S.config&&S.config.waKontak)||[];
+  if(!k.length) return '<p class="muted">Nomor WhatsApp Manager/Owner belum diatur.</p>';
+  return '<div class="kol">'+k.map(x=>'<a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/'+esc(x.nomor)+'?text='+encodeURIComponent(teks)+'">💬 Kabari '+esc(x.nama)+' via WhatsApp</a>').join('')+'</div>';
+}
+async function jalankan(fn){ try{ return await fn(); }catch(e){ selesaiMuat(); await pesanBox(e.message,'error'); } }
+
+/* ---------- login / sesi ---------- */
+function keluarLokal(){ S.token=null; S.profil=null; S.tab=null; lsSet('token',null); lsSet('profil',null); }
+function viewLogin(){
+  document.body.classList.add('no-tab'); $('tab').innerHTML=''; $('sub-app').textContent='Silakan masuk';
+  $('app').innerHTML =
+    '<div class="kartu" style="margin-top:20px">'+
+    '<div style="text-align:center"><img src="icon-192.png" style="width:84px;height:84px;border-radius:18px"><h2>Absensi Karyawan</h2><p class="muted">Sam\'s Coffee &amp; Eatery</p></div>'+
+    '<label for="lg-id">ID Karyawan</label><input id="lg-id" autocomplete="username" autocapitalize="characters" placeholder="contoh: SAM01" value="'+esc(ls('idTerakhir')||'')+'">'+
+    '<label for="lg-pin">PIN</label><input id="lg-pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="4–6 angka">'+
+    '<div id="lg-err"></div>'+
+    '<button class="btn" style="margin-top:16px" onclick="doLogin()">Masuk</button>'+
+    '<p class="muted" style="text-align:center;margin-top:14px">Lupa PIN? Hubungi Owner untuk reset.</p></div>'+
+    tombolPasangHtml();
+  $('lg-pin').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+}
+async function doLogin(){
+  const id=$('lg-id').value.trim().toUpperCase(), pin=$('lg-pin').value.trim();
+  if(!id||!pin){ $('lg-err').innerHTML='<div class="pesan merah">Isi ID dan PIN.</div>'; return; }
+  muat('Memeriksa…');
+  try{
+    const r = await api('login',{id:id,pin:pin});
+    S.token=r.token; S.profil=r.profil; S.config=r.config;
+    lsSet('token',r.token); lsSet('profil',r.profil); lsSet('config',r.config); lsSet('idTerakhir',id);
+    selesaiMuat(); S.tab=null; render();
+  }catch(e){ selesaiMuat(); $('lg-err').innerHTML='<div class="pesan merah">'+esc(e.message)+'</div>'; }
+}
+function viewGantiPin(wajib){
+  document.body.classList.toggle('no-tab', !!wajib);
+  if(wajib) $('tab').innerHTML='';
+  $('app').innerHTML='<div class="kartu"><h2>🔑 Ganti PIN</h2>'+
+    (wajib?'<div class="pesan kuning">Demi keamanan, Anda wajib mengganti PIN awal sebelum memakai aplikasi.</div>':'')+
+    '<label>PIN lama</label><input id="gp-lama" type="password" inputmode="numeric" maxlength="6">'+
+    '<label>PIN baru (4–6 angka)</label><input id="gp-baru" type="password" inputmode="numeric" maxlength="6">'+
+    '<label>Ulangi PIN baru</label><input id="gp-ulang" type="password" inputmode="numeric" maxlength="6">'+
+    '<div id="gp-err"></div><button class="btn" style="margin-top:14px" onclick="doGantiPin()">Simpan PIN Baru</button>'+
+    (wajib?'<button class="btn garis" style="margin-top:10px" onclick="doKeluar()">Keluar</button>':'<button class="btn garis" style="margin-top:10px" onclick="pindahTab(\'akun\')">Kembali</button>')+
+    '</div><p class="muted">Jangan beritahukan PIN Anda kepada siapa pun, termasuk teman kerja.</p>';
+}
+async function doGantiPin(){
+  const l=$('gp-lama').value.trim(), b=$('gp-baru').value.trim(), u=$('gp-ulang').value.trim();
+  const err=t=>$('gp-err').innerHTML='<div class="pesan merah">'+esc(t)+'</div>';
+  if(!/^\d{4,6}$/.test(b)) return err('PIN baru harus 4–6 angka.');
+  if(b!==u) return err('Ulangan PIN baru tidak sama.');
+  muat('Menyimpan…');
+  try{ await api('gantiPin',{pinLama:l,pinBaru:b}); S.profil.wajibGantiPin=false; lsSet('profil',S.profil); selesaiMuat(); await pesanBox('PIN berhasil diganti. Ingat baik-baik PIN baru Anda.','ok'); S.tab=null; render(); }
+  catch(e){ selesaiMuat(); if(e.kode!=='LOGIN') err(e.message); }
+}
+async function doKeluar(){
+  if(!(await konfirmasi('Keluar dari aplikasi?','Keluar','merah'))) return;
+  muat('Keluar…'); try{ await api('logout'); }catch(e){} selesaiMuat(); keluarLokal(); render();
+}
+
+/* ---------- navigasi ---------- */
+function daftarTab(){
+  const p=S.profil.peran;
+  if(p==='Owner') return [['kelola','📋','Hari Ini'],['persetujuan','✅','Persetujuan'],['rekap','📊','Rekap'],['akun','👤','Akun']];
+  if(p==='Manager') return [['beranda','🏠','Absen'],['kelola','📋','Hari Ini'],['persetujuan','✅','Persetujuan'],['rekap','📊','Rekap'],['akun','👤','Akun']];
+  return [['beranda','🏠','Absen'],['lembur','⏱️','Lembur'],['riwayat','🗓️','Riwayat'],['akun','👤','Akun']];
+}
+function gambarTab(){
+  document.body.classList.remove('no-tab');
+  const b=S.data.badge||0;
+  $('tab').innerHTML=daftarTab().map(t=>'<button class="'+(S.tab===t[0]?'aktif':'')+'" onclick="pindahTab(\''+t[0]+'\')"><span class="ik">'+t[1]+'</span>'+t[2]+
+    (t[0]==='persetujuan'&&b?'<span class="bdg">'+b+'</span>':'')+'</button>').join('');
+}
+function pindahTab(t){ S.tab=t; window.scrollTo(0,0); render(); }
+function render(){
+  if(!S.token||!S.profil){ viewLogin(); return; }
+  if(S.profil.wajibGantiPin){ viewGantiPin(true); return; }
+  if(!S.tab) S.tab=daftarTab()[0][0];
+  $('sub-app').textContent=S.profil.nama+' · '+S.profil.peran;
+  gambarTab();
+  const v={beranda:viewBeranda,lembur:viewLembur,riwayat:viewRiwayat,akun:viewAkun,kelola:viewKelola,persetujuan:viewPersetujuan,
+           rekap:viewRekap,pengaturan:viewPengaturan,karyawan:viewKaryawan,gantipin:()=>viewGantiPin(false)}[S.tab]||viewAkun;
+  Promise.resolve(v()).catch(e=>{ $('app').innerHTML='<div class="pesan merah">'+esc(e.message)+'</div><button class="btn" onclick="render()">Coba Lagi</button>'; });
+}
+function memuatHtml(t){ return '<div class="kartu" style="text-align:center;padding:30px"><div class="putar" style="margin:0 auto 12px"></div>'+esc(t||'Memuat data…')+'</div>'; }
+
+/* =====================================================================
+ *  BERANDA KARYAWAN (ABSEN)
+ * ===================================================================== */
+async function viewBeranda(){
+  $('app').innerHTML=memuatHtml('Memuat jadwal hari ini…');
+  const st=await api('status');
+  S.status=st; S.offset=st.ms-Date.now(); S.config=st.config; lsSet('config',st.config);
+  const t=st.tugas;
+  let jadwal='';
+  if(t.off) jadwal='<div class="besar">🌴 OFF / Libur</div><div class="muted">Selamat beristirahat.</div>';
+  else if(t.shift) jadwal='<div class="besar">'+esc(t.shift.nama)+'</div><div style="font-size:20px">'+esc(t.shift.mulai)+' – '+esc(t.shift.selesai)+' WIB</div>';
+  else jadwal='<div class="besar">Tidak ada jadwal</div><div class="muted">'+(t.adaJadwal?'Nama Anda tidak ada di jadwal hari ini.':'Jadwal hari ini belum diisi Manager.')+'</div>';
+  t.lembur.forEach(l=>{ jadwal+='<div class="pesan kuning" style="margin-bottom:0">⏱️ '+esc(l.nama)+': <b>'+esc(l.mulai)+' – '+esc(l.selesai)+'</b> (wajib)</div>'; });
+  if(t.piket.length) jadwal+='<div class="pesan biru" style="margin-bottom:0">🧹 Hari ini Anda <b>piket kamar mandi</b> (shift '+esc(t.piket.join(' & '))+').</div>';
+
+  let tombol='';
+  if(st.lemburBerlangsung){
+    tombol+='<div class="pesan kuning">Lembur sedang berlangsung sejak <b>'+esc(st.lemburBerlangsung.mulai)+'</b></div>'+
+      '<button class="btn oranye besar-sekali" onclick="bukaAbsen(\'SELESAI_LEMBUR\')">⏹️ SELESAI LEMBUR</button>';
+  } else {
+    if(st.masukTerbuka) tombol+='<button class="btn merah besar-sekali" onclick="bukaAbsen(\'PULANG\')">🏠 ABSEN PULANG</button>';
+    else if(!st.sudahMasukHariIni && !t.off) tombol+='<button class="btn hijau besar-sekali" onclick="bukaAbsen(\'MASUK\')">✅ ABSEN MASUK</button>';
+    S.data.lemburTersedia=st.lemburTersedia;
+    st.lemburTersedia.forEach((l,i)=>{
+      tombol+='<button class="btn oranye" style="margin-top:10px;flex-direction:column;gap:2px" onclick="bukaAbsen(\'MULAI_LEMBUR\','+i+')">▶️ MULAI LEMBUR<br><small style="font-weight:400">'+esc(l.label)+' · '+esc(l.mulai)+'–'+esc(l.selesai)+'</small></button>';
+    });
+  }
+  if(!tombol) tombol='<div class="pesan hijau">Tidak ada absen yang perlu dilakukan saat ini. 👍</div>';
+
+  const riw=st.absen.length? st.absen.map(a=>'<div class="item baris"><div><b>'+esc(a.jenis)+'</b> <span class="muted">'+esc(a.waktu)+'</span>'+
+      (a.perluDicek?'<div class="muted">⚠️ '+esc(a.perluDicek)+'</div>':'')+'</div>'+chipStatus(a.status)+'</div>').join('')
+    : '<p class="muted">Belum ada absen hari ini.</p>';
+
+  const b=st.besok; let besok='';
+  if(b.off) besok='OFF / Libur'; else if(b.shift) besok=b.shift.nama+' '+b.shift.mulai+'–'+b.shift.selesai; else besok='Belum ada jadwal';
+  if(b.lembur.length) besok+=' + '+b.lembur.map(l=>l.nama+' '+l.mulai+'–'+l.selesai).join(', ');
+  if(b.piket.length) besok+=' · Piket kamar mandi';
+
+  $('app').innerHTML=
+    '<div class="baris" style="margin-bottom:8px"><div><div class="muted">'+esc(tglPanjang(st.tanggal))+'</div><h2 style="margin:2px 0">Halo, '+esc(S.profil.nama)+' 👋</h2></div>'+
+    '<button class="btn garis kecil" onclick="render()">🔄</button></div>'+
+    '<div class="kartu"><div class="muted">Jadwal hari ini</div>'+jadwal+'</div>'+
+    '<div class="kol" style="margin-bottom:12px">'+tombol+'</div>'+
+    '<div class="kartu"><h3 style="margin-top:0">Absen hari ini</h3><div class="daftar">'+riw+'</div></div>'+
+    '<div class="kartu lembut"><div class="muted">Besok ('+esc(tglPendek(tambahHari(st.tanggal,1)))+')</div><b>'+esc(besok)+'</b></div>'+
+    (S.profil.peran==='Manager'?'<button class="btn garis" onclick="pindahTab(\'lembur\')">⏱️ Ajukan / Lihat Lembur Saya</button>':'');
+}
+
+/* ---------- proses absen: GPS + kamera depan + watermark ---------- */
+const A={};
+const JUDUL_ABSEN={MASUK:'Absen Masuk',PULANG:'Absen Pulang',MULAI_LEMBUR:'Mulai Lembur',SELESAI_LEMBUR:'Selesai Lembur'};
+async function bukaAbsen(jenis, idxLembur){
+  let hasil='';
+  if(jenis==='SELESAI_LEMBUR'){
+    hasil=await mintaTeks('Hasil pekerjaan lembur','Tuliskan pekerjaan yang sudah Anda selesaikan selama lembur.','contoh: Membersihkan dapur dan menyusun stok gudang',true);
+    if(hasil===null) return;
+  }
+  Object.keys(A).forEach(k=>delete A[k]);
+  A.jenis=jenis; A.hasil=hasil; A.alasan='';
+  A.lemburId = (idxLembur!==undefined && S.data.lemburTersedia) ? S.data.lemburTersedia[idxLembur].id : '';
+  $('absen-judul').textContent=JUDUL_ABSEN[jenis];
+  $('absen-kamera').innerHTML='<video id="vid" playsinline muted autoplay></video>';
+  $('absen-tombol').innerHTML='';
+  $('absen').classList.add('buka');
+  infoAbsen();
+  mulaiGPS(); mulaiKamera();
+}
+function tutupAbsen(){
+  try{ if(A.watch!==undefined) navigator.geolocation.clearWatch(A.watch); }catch(e){}
+  try{ if(A.stream) A.stream.getTracks().forEach(t=>t.stop()); }catch(e){}
+  A.stream=null; A.watch=undefined;
+  $('absen').classList.remove('buka'); $('absen-kamera').innerHTML='';
+}
+function mulaiGPS(){
+  if(!navigator.geolocation){ A.gpsErr='HP ini tidak mendukung GPS.'; infoAbsen(); return; }
+  A.watch=navigator.geolocation.watchPosition(p=>{ A.pos=p; A.gpsErr=''; infoAbsen(); },
+    e=>{ A.gpsErr = e.code===1 ? 'Izin LOKASI ditolak. Buka pengaturan Chrome → Izin situs → Lokasi → Izinkan, lalu coba lagi.' :
+                    'GPS belum mendapat sinyal. Pastikan Lokasi/GPS di HP menyala, lalu tunggu sebentar.'; infoAbsen(); },
+    {enableHighAccuracy:true, maximumAge:0, timeout:30000});
+}
+async function mulaiKamera(){
+  try{
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw {name:'NoSupport'};
+    A.stream=await navigator.mediaDevices.getUserMedia({audio:false, video:{facingMode:'user', width:{ideal:720}, height:{ideal:960}}});
+    const v=$('vid'); if(!v){ A.stream.getTracks().forEach(t=>t.stop()); return; }
+    v.srcObject=A.stream; await v.play().catch(()=>{});
+    A.kameraSiap=true; A.camErr='';
+  }catch(e){
+    A.camErr = e.name==='NotAllowedError' ? 'Izin KAMERA ditolak. Buka pengaturan Chrome → Izin situs → Kamera → Izinkan, lalu coba lagi.' :
+               e.name==='NoSupport' ? 'Browser ini tidak mendukung kamera. Gunakan Google Chrome.' : 'Kamera tidak bisa dibuka ('+(e.name||e)+'). Tutup aplikasi lain yang memakai kamera, lalu coba lagi.';
+  }
+  infoAbsen();
+}
+function infoAbsen(){
+  const c=S.config||{}; let h='', bisa=false;
+  if(A.camErr) h+='<div><span class="dot merah"></span>'+esc(A.camErr)+'</div>';
+  else if(!A.kameraSiap) h+='<div><span class="dot kuning"></span>Membuka kamera depan…</div>';
+  if(A.gpsErr) h+='<div><span class="dot merah"></span>'+esc(A.gpsErr)+'</div>';
+  else if(!A.pos) h+='<div><span class="dot kuning"></span>Mencari lokasi GPS… (tunggu 5–20 detik)</div>';
+  else{
+    const lat=A.pos.coords.latitude,lng=A.pos.coords.longitude,acc=Math.round(A.pos.coords.accuracy);
+    const jarak=Math.round(jarakMeter(lat,lng,c.lat,c.lng)); A.jarak=jarak;
+    const okJarak = jarak<=c.radius;
+    h+='<div><span class="dot '+(okJarak?'hijau':'merah')+'"></span>Jarak ke kafe: <b>'+jarak+' m</b> (batas '+c.radius+' m)</div>';
+    h+='<div><span class="dot '+(acc<=c.akurasiMaks?'hijau':'kuning')+'"></span>Akurasi GPS: ±'+acc+' m'+(acc>c.akurasiMaks?' — sinyal lemah, tunggu sebentar atau pindah ke area terbuka':'')+'</div>';
+    if(!okJarak) h+='<div style="color:#ff8a80;margin-top:6px"><b>Anda berada di luar area kafe.</b> Mendekatlah ke kafe. Jika sudah di kafe, tunggu GPS stabil.</div>';
+    bisa = okJarak && A.kameraSiap && !A.camErr;
+  }
+  $('absen-info').innerHTML=h;
+  if(!A.foto){
+    $('absen-tombol').innerHTML='<button class="btn hijau besar-sekali" '+(bisa?'':'disabled')+' onclick="ambilFoto()">📸 AMBIL FOTO SELFIE</button>';
+  }
+}
+function ambilFoto(){
+  const v=$('vid'); if(!v||!v.videoWidth){ pesanBox('Kamera belum siap, tunggu sebentar.','error'); return; }
+  const p=A.pos; A.posFoto=p;
+  const W=540, H=Math.round(v.videoHeight*W/v.videoWidth);
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const x=cv.getContext('2d');
+  x.translate(W,0); x.scale(-1,1); x.drawImage(v,0,0,W,H); x.setTransform(1,0,0,1,0,0);
+  const waktu=sekarang();
+  const baris=[
+    S.profil.nama+' ('+S.profil.id+') — '+JUDUL_ABSEN[A.jenis].toUpperCase(),
+    tglPanjang(tglWIB(waktu))+'  '+jamDetikWIB(waktu)+' WIB',
+    'Lok: '+p.coords.latitude.toFixed(6)+', '+p.coords.longitude.toFixed(6)+'  (±'+Math.round(p.coords.accuracy)+' m)',
+    'Jarak '+A.jarak+' m dari kafe · Sam\'s Coffee & Eatery'
+  ];
+  const fs=Math.round(W/30), lh=Math.round(fs*1.35), tinggi=lh*baris.length+fs;
+  x.fillStyle='rgba(0,0,0,0.6)'; x.fillRect(0,H-tinggi,W,tinggi);
+  x.fillStyle='#fff'; x.font='bold '+fs+'px sans-serif'; x.textBaseline='top';
+  baris.forEach((t,i)=>x.fillText(t, Math.round(fs*0.6), H-tinggi+Math.round(fs*0.5)+i*lh));
+  let q=0.82, url=cv.toDataURL('image/jpeg',q);
+  while(url.length*0.75>MAKS_FOTO_KB*1024 && q>0.35){ q-=0.08; url=cv.toDataURL('image/jpeg',q); }
+  A.foto=url;
+  try{ A.stream.getTracks().forEach(t=>t.stop()); }catch(e){}
+  A.stream=null; A.kameraSiap=false;
+  $('absen-kamera').innerHTML='<img class="hasil" src="'+url+'" alt="Foto selfie">';
+  $('absen-tombol').innerHTML='<div class="grid2"><button class="btn garis" onclick="ulangiFoto()">🔄 Ulangi</button><button class="btn hijau" onclick="kirimAbsen()">✅ KIRIM</button></div>'+
+    '<div class="muted" style="color:#ccc;text-align:center;margin-top:6px">Ukuran foto: '+Math.round(url.length*0.75/1024)+' KB</div>';
+}
+function ulangiFoto(){
+  A.foto=null; $('absen-kamera').innerHTML='<video id="vid" playsinline muted autoplay></video>'; infoAbsen(); mulaiKamera();
+}
+async function kirimAbsen(){
+  const p=A.posFoto||A.pos;
+  muat('Mengirim absen…');
+  try{
+    const r=await api('absen',{jenis:A.jenis, lat:p.coords.latitude, lng:p.coords.longitude, akurasi:p.coords.accuracy,
+      foto:A.foto, lemburId:A.lemburId, hasil:A.hasil, alasan:A.alasan});
+    selesaiMuat(); const jenis=A.jenis, alasan=A.alasan; tutupAbsen(); tampilHasilAbsen(r, jenis, alasan);
+  }catch(e){
+    selesaiMuat();
+    if(e.kode==='PERLU_ALASAN'){
+      const a=await mintaTeks('Pulang lebih cepat?', e.message+'\n\nKarena mendahului jadwal, pulang cepat perlu izin Manager/Owner.','Tulis alasan…',true);
+      if(a){ A.alasan=a; return kirimAbsen(); }
+      return;
+    }
+    if(e.kode==='LOGIN'){ tutupAbsen(); return; }
+    await pesanBox(e.message,'error', e.kode==='DILUAR_RADIUS'?'Di luar area kafe':'Absen gagal');
+  }
+}
+async function tampilHasilAbsen(r, jenis, alasan){
+  const telat=/Terlambat/.test(r.status), pc=r.perluKabari;
+  let h='<div class="hasil-ikon">'+(telat||pc?'⚠️':'✅')+'</div><h2 style="text-align:center">'+esc(JUDUL_ABSEN[jenis])+' tercatat</h2>'+
+    '<div style="text-align:center;margin-bottom:10px">'+chipStatus(r.status)+'</div>'+
+    '<p style="text-align:center;font-size:18px">'+esc(r.pesan)+'</p>'+
+    '<div class="kartu lembut"><div class="baris"><span>Waktu server</span><b>'+esc(String(r.waktu).slice(11,16))+' WIB</b></div>'+
+    '<div class="baris"><span>Jarak dari kafe</span><b>'+esc(r.jarak)+' m</b></div><div class="baris"><span>Akurasi GPS</span><b>±'+esc(r.akurasi)+' m</b></div></div>'+
+    (r.perluDicek?'<div class="pesan kuning">Ditandai perlu dicek: '+esc(r.perluDicek)+'</div>':'');
+  if(pc) h+='<p><b>Segera kabari Manager/Owner:</b></p>'+tombolWA('Assalamualaikum, saya '+S.profil.nama+' izin pulang lebih cepat hari ini pukul '+jamWIB()+'. Alasan: '+alasan+'. Mohon izinnya di aplikasi absensi. Terima kasih.');
+  h+='<button class="btn" style="margin-top:12px" onclick="tutupDialog(true)">OK</button>';
+  await new Promise(res=>{ _dlgResolve=res; bukaDialog(h); });
+  render();
+}
+
+/* =====================================================================
+ *  LEMBUR (KARYAWAN)
+ * ===================================================================== */
+async function viewLembur(){
+  const hari=tglWIB();
+  $('app').innerHTML='<h2>⏱️ Lembur</h2>'+
+    '<div class="kartu"><h3 style="margin-top:0">Ajukan lembur</h3><p class="muted">Isi SEBELUM lembur. Lembur hanya bisa dimulai setelah disetujui Manager/Owner. Lembur L19 & FD dari jadwal tidak perlu diajukan.</p>'+
+    '<label>Tanggal</label><input type="date" id="lb-tgl" value="'+hari+'" min="'+tambahHari(hari,-1)+'">'+
+    '<div class="grid2"><div><label>Jam mulai</label><input type="time" id="lb-mulai" value="17:00"></div><div><label>Jam selesai</label><input type="time" id="lb-selesai" value="19:00"></div></div>'+
+    '<label>Alasan / pekerjaan</label><textarea id="lb-alasan" placeholder="contoh: Persiapan acara ulang tahun pelanggan"></textarea>'+
+    '<div id="lb-err"></div><button class="btn" style="margin-top:12px" onclick="ajukanLembur()">Kirim Pengajuan</button></div>'+
+    '<div class="kartu"><h3 style="margin-top:0">Lembur saya (60 hari)</h3><div id="lb-daftar">'+memuatHtml()+'</div></div>';
+  const d=await api('lemburSaya');
+  $('lb-daftar').innerHTML = d.length ? '<div class="daftar">'+d.map(l=>'<div class="item"><div class="baris"><b>'+esc(tglPendek(l['Tanggal']))+' · '+esc(l['Rencana Mulai'])+'–'+esc(l['Rencana Selesai'])+'</b>'+chipStatus(l['Status'])+'</div>'+
+      '<div class="muted">'+esc(l['Sumber'])+': '+esc(l['Alasan'])+'</div>'+
+      (l['Catatan Keputusan']?'<div class="muted">Catatan: '+esc(l['Catatan Keputusan'])+'</div>':'')+
+      (l['Status']==='Tervalidasi'?'<div><b>Jam lembur disetujui: '+esc(l['Total Jam'])+' jam</b></div>':'')+
+      (l['Status']==='Menunggu Validasi'?'<div class="muted">Durasi tercatat: '+esc(l['Total Jam'])+' jam (menunggu validasi)</div>':'')+'</div>').join('')+'</div>'
+    : '<p class="muted">Belum ada data lembur.</p>';
+}
+async function ajukanLembur(){
+  const tgl=$('lb-tgl').value, m=$('lb-mulai').value, s=$('lb-selesai').value, a=$('lb-alasan').value.trim();
+  if(!tgl||!m||!s||a.length<5){ $('lb-err').innerHTML='<div class="pesan merah">Lengkapi tanggal, jam, dan alasan.</div>'; return; }
+  muat('Mengirim pengajuan…');
+  try{
+    const r=await api('ajukanLembur',{tanggal:tgl,mulai:m,selesai:s,alasan:a}); selesaiMuat();
+    await new Promise(res=>{ _dlgResolve=res; bukaDialog('<div class="hasil-ikon">📨</div><h2 style="text-align:center">Pengajuan terkirim</h2><p style="text-align:center">'+esc(r.pesan)+'</p><p>Kabari Manager/Owner agar segera disetujui:</p>'+tombolWA(r.teksWA)+'<button class="btn garis" style="margin-top:10px" onclick="tutupDialog(true)">Tutup</button>'); });
+    render();
+  }catch(e){ selesaiMuat(); $('lb-err').innerHTML='<div class="pesan merah">'+esc(e.message)+'</div>'; }
+}
+
+/* =====================================================================
+ *  RIWAYAT (KARYAWAN)
+ * ===================================================================== */
+async function viewRiwayat(){
+  $('app').innerHTML='<h2>🗓️ Riwayat Absen (14 hari)</h2>'+memuatHtml();
+  const hari=tglWIB();
+  const d=await api('absensiList',{dari:tambahHari(hari,-13),sampai:hari});
+  const grup={}; d.forEach(r=>{ (grup[r['Tanggal Kerja']]=grup[r['Tanggal Kerja']]||[]).push(r); });
+  const tgl=Object.keys(grup).sort().reverse();
+  $('app').innerHTML='<h2>🗓️ Riwayat Absen (14 hari)</h2>'+(tgl.length? tgl.map(t=>'<div class="kartu"><b>'+esc(tglPanjang(t))+'</b><div class="daftar">'+
+    grup[t].slice().reverse().map(r=>'<div class="item baris"><div>'+esc(r['Jenis'])+' <span class="muted">'+esc(String(r['Waktu Server']).slice(11,16))+'</span>'+
+      (r['Catatan/Alasan']?'<div class="muted">'+esc(r['Catatan/Alasan'])+'</div>':'')+'</div>'+chipStatus(r['Status'])+'</div>').join('')+'</div></div>').join('')
+    : '<div class="kartu"><p class="muted">Belum ada riwayat absen.</p></div>');
+}
+
+/* =====================================================================
+ *  AKUN
+ * ===================================================================== */
+function tombolPasangHtml(){
+  return S.pasang ? '<button class="btn biru" style="margin-top:10px" onclick="pasangApp()">📲 Pasang Aplikasi di HP</button>' : '';
+}
+async function pasangApp(){ if(!S.pasang) return; S.pasang.prompt(); try{ await S.pasang.userChoice; }catch(e){} S.pasang=null; render(); }
+function viewAkun(){
+  const p=S.profil, own=p.peran==='Owner';
+  $('app').innerHTML='<h2>👤 Akun</h2><div class="kartu"><div class="besar">'+esc(p.nama)+'</div>'+
+    (p.namaLengkap?'<div>'+esc(p.namaLengkap)+'</div>':'')+'<div class="muted">ID: '+esc(p.id)+' · '+esc(p.bagian)+' · '+esc(p.peran)+'</div></div>'+
+    '<div class="kol">'+
+    (own?'<button class="btn" onclick="pindahTab(\'pengaturan\')">⚙️ Pengaturan Kafe</button><button class="btn" onclick="pindahTab(\'karyawan\')">👥 Data Karyawan & PIN</button>':'')+
+    (p.peran==='Manager'?'<button class="btn" onclick="pindahTab(\'karyawan\')">👥 Daftar Karyawan</button>':'')+
+    '<button class="btn garis" onclick="pindahTab(\'gantipin\')">🔑 Ganti PIN</button>'+
+    tombolPasangHtml()+
+    '<button class="btn merah" onclick="doKeluar()">🚪 Keluar</button></div>'+
+    '<p class="muted" style="text-align:center;margin-top:20px">Absensi Sam\'s Coffee &amp; Eatery · versi '+VERSI+'</p>';
+}
+
+/* =====================================================================
+ *  MANAGER / OWNER — HARI INI
+ * ===================================================================== */
+async function viewKelola(){
+  const t=S.data.tglKelola||tglWIB();
+  $('app').innerHTML='<h2>📋 Kehadiran</h2><div class="kartu"><label style="margin-top:0">Tanggal</label><input type="date" id="kl-tgl" value="'+t+'" onchange="S.data.tglKelola=this.value;render()"></div><div id="kl-isi">'+memuatHtml()+'</div>';
+  const d=await api('dashboard',{tanggal:t});
+  S.data.badge=d.lemburMenunggu+d.lemburValidasi+d.izinMenunggu; gambarTab();
+  S.data.dash=d.daftar;
+  const kotak=(n,teks,warna,tab)=>'<button class="btn '+(n?warna:'garis')+' kecil" style="width:100%;flex-direction:column;min-height:64px" onclick="S.data.segP=\''+tab+'\';pindahTab(\'persetujuan\')"><span style="font-size:22px">'+n+'</span><span style="font-size:13px;font-weight:600">'+teks+'</span></button>';
+  const hadir=d.daftar.filter(x=>x.masuk).length, wajib=d.daftar.filter(x=>x.jadwal!=='OFF'&&x.jadwal!=='-').length;
+  $('kl-isi').innerHTML=
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">'+kotak(d.lemburMenunggu,'Lembur baru','oranye','baru')+kotak(d.lemburValidasi,'Validasi lembur','oranye','validasi')+kotak(d.izinMenunggu,'Izin pulang cepat','oranye','izin')+'</div>'+
+    '<div class="kartu"><div class="baris"><b>'+esc(tglPanjang(t))+'</b><span class="chip">'+hadir+' / '+wajib+' hadir</span></div><div class="daftar">'+
+    d.daftar.map((x,i)=>'<div class="item" onclick="detailAbsen('+i+')" style="cursor:pointer"><div class="baris"><b>'+esc(x.nama)+(x.perluDicek?' ⚠️':'')+'</b>'+chipStatus(x.ket)+'</div>'+
+      '<div class="muted">'+esc(x.bagian)+' · '+esc(x.jadwal)+(x.lembur?' · Lembur '+esc(x.lembur):'')+'</div>'+
+      ((x.masuk||x.pulang)?'<div style="font-size:15px">Masuk <b>'+esc(x.masuk||'-')+'</b> · Pulang <b>'+esc(x.pulang||'-')+'</b> '+(x.statusPulang&&x.statusPulang!=='Normal'?chipStatus(x.statusPulang):'')+'</div>':'')+'</div>').join('')+
+    '</div><p class="muted">Ketuk nama untuk melihat foto, lokasi, dan detail absen.</p></div>'+
+    '<button class="btn garis" onclick="lihatPerluCek()">⚠️ Absen yang perlu dicek (7 hari)</button>';
+}
+function kartuAbsenDetail(r){
+  return '<div class="item"><div class="baris"><b>'+esc(r['Jenis'])+' · '+esc(String(r['Waktu Server']).slice(11,16))+'</b>'+chipStatus(r['Status'])+'</div>'+
+    '<div class="muted">'+esc(r['Nama'])+' · '+esc(tglPendek(r['Tanggal Kerja']))+' · Jadwal '+esc(r['Jam Jadwal']||'-')+(r['Selisih Menit']!==''?' · selisih '+esc(r['Selisih Menit'])+' mnt':'')+'</div>'+
+    '<div class="muted">Jarak '+esc(r['Jarak (m)'])+' m · Akurasi ±'+esc(r['Akurasi (m)'])+' m</div>'+
+    (r['Perlu Dicek']?'<div class="pesan kuning" style="margin:6px 0">⚠️ '+esc(r['Perlu Dicek'])+'</div>':'')+
+    (r['Catatan/Alasan']?'<div>📝 '+esc(r['Catatan/Alasan'])+'</div>':'')+
+    '<div class="grid2" style="margin-top:6px"><a class="btn kecil garis" style="width:100%" target="_blank" rel="noopener" href="'+esc(r['Link Google Maps'])+'">📍 Lihat Peta</a>'+
+    '<button class="btn kecil garis" style="width:100%" onclick="lihatFoto(this,\''+esc(r['ID Foto'])+'\')">🖼️ Lihat Foto</button></div><div></div></div>';
+}
+async function detailAbsen(i){
+  const x=S.data.dash[i], t=S.data.tglKelola||tglWIB();
+  bukaDialog('<h2>'+esc(x.nama)+'</h2>'+memuatHtml());
+  try{
+    const d=await api('absensiList',{dari:t,sampai:t,id:x.id});
+    bukaDialog('<h2>'+esc(x.nama)+' · '+esc(tglPendek(t))+'</h2><div class="muted">'+esc(x.jadwal)+'</div><div class="daftar">'+
+      (d.length?d.slice().reverse().map(kartuAbsenDetail).join(''):'<p class="muted">Belum ada absen pada tanggal ini.</p>')+'</div>'+
+      '<button class="btn garis" style="margin-top:10px" onclick="formCatatIzin(\''+esc(x.id)+'\',\''+esc(x.nama)+'\',\''+t+'\')">🤒 Catat Sakit / Izin</button>'+
+      '<button class="btn" style="margin-top:10px" onclick="tutupDialog()">Tutup</button>');
+  }catch(e){ tutupDialog(); pesanBox(e.message,'error'); }
+}
+async function lihatFoto(btn,idFoto){
+  if(!idFoto){ pesanBox('Foto tidak tersedia.','error'); return; }
+  const wadah=btn.parentNode.nextElementSibling; btn.disabled=true; btn.textContent='Memuat…';
+  try{ const r=await api('foto',{idFoto:idFoto}); wadah.innerHTML='<img class="foto-detail" src="'+r.dataUrl+'" alt="Foto absen">'; btn.textContent='🖼️ Foto tampil'; }
+  catch(e){ btn.disabled=false; btn.textContent='🖼️ Lihat Foto'; pesanBox(e.message,'error'); }
+}
+async function lihatPerluCek(){
+  const hari=tglWIB();
+  bukaDialog('<h2>⚠️ Perlu dicek</h2>'+memuatHtml());
+  try{
+    const d=await api('absensiList',{dari:tambahHari(hari,-6),sampai:hari,hanyaCek:true});
+    bukaDialog('<h2>⚠️ Perlu dicek (7 hari)</h2><p class="muted">Absen dengan akurasi GPS buruk atau tanpa jadwal. Periksa foto & lokasinya.</p><div class="daftar">'+
+      (d.length?d.map(kartuAbsenDetail).join(''):'<p class="muted">Tidak ada. 👍</p>')+'</div><button class="btn" style="margin-top:10px" onclick="tutupDialog()">Tutup</button>');
+  }catch(e){ tutupDialog(); pesanBox(e.message,'error'); }
+}
+function formCatatIzin(id,nama,t){
+  bukaDialog('<h2>🤒 Catat Sakit / Izin</h2><p><b>'+esc(nama)+'</b></p>'+
+    '<label>Tanggal</label><input type="date" id="iz-tgl" value="'+esc(t)+'">'+
+    '<label>Jenis</label><select id="iz-jenis"><option>Sakit</option><option>Izin</option><option>Cuti</option></select>'+
+    '<label>Keterangan</label><textarea id="iz-ket" placeholder="contoh: Demam, ada surat dokter"></textarea>'+
+    '<div class="grid2" style="margin-top:12px"><button class="btn garis" onclick="tutupDialog()">Batal</button><button class="btn" onclick="simpanIzin(\''+esc(id)+'\')">Simpan</button></div>');
+}
+async function simpanIzin(id){
+  const d={id:id,tanggal:$('iz-tgl').value,jenis:$('iz-jenis').value,keterangan:$('iz-ket').value};
+  tutupDialog(); muat('Menyimpan…');
+  await jalankan(async()=>{ const r=await api('catatIzin',d); selesaiMuat(); await pesanBox(r.pesan,'ok'); render(); });
+}
+
+/* =====================================================================
+ *  PERSETUJUAN (LEMBUR & IZIN)
+ * ===================================================================== */
+async function viewPersetujuan(){
+  const seg=S.data.segP||'baru';
+  const segs=[['baru','Lembur Baru'],['validasi','Validasi'],['izin','Izin'],['perintah','Perintah Lembur'],['riwayat','Riwayat']];
+  $('app').innerHTML='<h2>✅ Persetujuan</h2><div class="seg">'+segs.map(s=>'<button class="'+(seg===s[0]?'aktif':'')+'" onclick="S.data.segP=\''+s[0]+'\';render()">'+s[1]+'</button>').join('')+'</div><div id="ps-isi">'+memuatHtml()+'</div>';
+  const isi=$('ps-isi');
+  if(seg==='baru'){
+    const d=await api('lemburList',{status:'Menunggu Persetujuan'}); S.data.lb=d;
+    isi.innerHTML=d.length? d.map((l,i)=>'<div class="kartu"><div class="baris"><b>'+esc(l['Nama'])+'</b>'+chipStatus(l['Status'])+'</div>'+
+      '<div style="font-size:18px">'+esc(tglPanjang(l['Tanggal']))+'<br><b>'+esc(l['Rencana Mulai'])+' – '+esc(l['Rencana Selesai'])+'</b></div>'+
+      '<div>📝 '+esc(l['Alasan'])+'</div><div class="muted">Diajukan '+esc(l['Dibuat'])+'</div>'+
+      '<div class="grid2" style="margin-top:10px"><button class="btn merah" onclick="putuskanLembur('+i+',\'Tolak\')">✖ Tolak</button><button class="btn hijau" onclick="putuskanLembur('+i+',\'Setujui\')">✔ Setujui</button></div></div>').join('')
+      : '<div class="kartu"><p class="muted">Tidak ada pengajuan lembur baru. 👍</p></div>';
+  } else if(seg==='validasi'){
+    const d=await api('lemburList',{status:'Menunggu Validasi'}); S.data.lb=d;
+    isi.innerHTML=d.length? d.map((l,i)=>'<div class="kartu"><div class="baris"><b>'+esc(l['Nama'])+'</b><span class="chip">'+esc(l['Sumber'])+'</span></div>'+
+      '<div>'+esc(tglPanjang(l['Tanggal']))+' · Rencana '+esc(l['Rencana Mulai'])+'–'+esc(l['Rencana Selesai'])+'</div>'+
+      '<div class="muted">Absen aktual: '+esc(String(l['Mulai Aktual']).slice(11,16))+' – '+esc(String(l['Selesai Aktual']).slice(11,16))+'</div>'+
+      '<div>✅ Hasil: '+esc(l['Hasil Pekerjaan'])+'</div>'+
+      '<div><div><label>Mulai disetujui</label><input type="datetime-local" id="vm-'+i+'" value="'+esc(keDTLocal(l['Mulai Valid']))+'" oninput="hitungValidasi('+i+')"></div>'+
+      '<div><label>Selesai disetujui</label><input type="datetime-local" id="vs-'+i+'" value="'+esc(keDTLocal(l['Selesai Valid']))+'" oninput="hitungValidasi('+i+')"></div></div>'+
+      '<div class="pesan biru" id="vt-'+i+'"></div><label>Catatan (opsional)</label><input id="vc-'+i+'" placeholder="contoh: dipotong 30 menit istirahat">'+
+      '<button class="btn hijau" style="margin-top:10px" onclick="validasiLembur('+i+')">✔ Validasi Jam Lembur</button></div>').join('')
+      : '<div class="kartu"><p class="muted">Tidak ada lembur yang menunggu validasi. 👍</p></div>';
+    d.forEach((l,i)=>hitungValidasi(i));
+  } else if(seg==='izin'){
+    const d=await api('izinList',{status:'Menunggu'}); S.data.iz=d;
+    isi.innerHTML=d.length? d.map((r,i)=>'<div class="kartu"><div class="baris"><b>'+esc(r['Nama'])+'</b>'+chipStatus(r['Jenis'])+'</div>'+
+      '<div>'+esc(tglPanjang(r['Tanggal']))+'</div><div>📝 '+esc(r['Keterangan'])+'</div><div class="muted">Dicatat '+esc(r['Dibuat'])+'</div>'+
+      '<div class="grid2" style="margin-top:10px"><button class="btn merah" onclick="putuskanIzin('+i+',\'Tolak\')">✖ Tidak Diizinkan</button><button class="btn hijau" onclick="putuskanIzin('+i+',\'Setujui\')">✔ Izinkan</button></div></div>').join('')
+      : '<div class="kartu"><p class="muted">Tidak ada izin yang menunggu keputusan. 👍</p></div>';
+  } else if(seg==='perintah'){
+    if(!S.karyawan) S.karyawan=await api('karyawanList');
+    const ky=S.karyawan.filter(k=>k.aktif==='Ya'&&(k.peran==='Karyawan'||k.peran==='Manager'));
+    isi.innerHTML='<div class="kartu"><p class="muted">Untuk lembur di luar jadwal yang diminta Manager/Owner (mis. General Cleaning). Langsung berstatus <b>Disetujui</b>; karyawan tinggal absen mulai & selesai lembur.</p>'+
+      '<label>Pilih karyawan</label><div class="kartu lembut" style="max-height:260px;overflow:auto">'+ky.map(k=>'<label style="display:flex;gap:10px;align-items:center;font-weight:400;margin:6px 0"><input type="checkbox" class="pl-k" value="'+esc(k.id)+'" style="width:24px;height:24px"> '+esc(k.nama)+' <span class="muted">('+esc(k.bagian)+')</span></label>').join('')+'</div>'+
+      '<label>Tanggal</label><input type="date" id="pl-tgl" value="'+tglWIB()+'">'+
+      '<div class="grid2"><div><label>Mulai</label><input type="time" id="pl-m" value="09:00"></div><div><label>Selesai</label><input type="time" id="pl-s" value="17:00"></div></div>'+
+      '<label>Pekerjaan</label><input id="pl-a" placeholder="contoh: General Cleaning minggu IV">'+
+      '<button class="btn" style="margin-top:12px" onclick="kirimPerintah()">Buat Perintah Lembur</button></div>';
+  } else {
+    const hari=tglWIB();
+    const d=await api('lemburList',{dari:tambahHari(hari,-30),sampai:tambahHari(hari,30)});
+    isi.innerHTML='<div class="kartu"><div class="daftar">'+(d.length? d.map(l=>'<div class="item"><div class="baris"><b>'+esc(l['Nama'])+' · '+esc(tglPendek(l['Tanggal']))+'</b>'+chipStatus(l['Status'])+'</div>'+
+      '<div class="muted">'+esc(l['Sumber'])+' · '+esc(l['Rencana Mulai'])+'–'+esc(l['Rencana Selesai'])+' · '+esc(l['Alasan'])+'</div>'+
+      (l['Total Jam']!==''?'<div>Total: <b>'+esc(l['Total Jam'])+' jam</b>'+(l['Divalidasi Oleh']?' · oleh '+esc(l['Divalidasi Oleh']):'')+'</div>':'')+'</div>').join('') : '<p class="muted">Belum ada data.</p>')+'</div></div>';
+  }
+}
+function hitungValidasi(i){
+  const m=parseDT($('vm-'+i).value), s=parseDT($('vs-'+i).value), el=$('vt-'+i);
+  if(!m||!s||isNaN(m)||isNaN(s)){ el.textContent='Isi jam mulai & selesai.'; return; }
+  el.innerHTML='Total lembur dihitung: <b>'+hitungJam(m,s)+' jam</b> <span class="muted">(kelipatan 30 menit)</span>';
+}
+async function putuskanLembur(i,kep){
+  const l=S.data.lb[i]; let cat='';
+  if(kep==='Tolak'){ cat=await mintaTeks('Tolak lembur '+l['Nama'],'Tulis alasan penolakan:','',true); if(cat===null) return; }
+  else if(!(await konfirmasi('Setujui lembur '+l['Nama']+'\n'+tglPanjang(l['Tanggal'])+' jam '+l['Rencana Mulai']+'–'+l['Rencana Selesai']+'?','Setujui','hijau'))) return;
+  muat('Menyimpan…');
+  await jalankan(async()=>{ const r=await api('putuskanLembur',{id:l['ID Lembur'],keputusan:kep,catatan:cat}); selesaiMuat(); await pesanBox(r.pesan,'ok'); render(); });
+}
+async function validasiLembur(i){
+  const l=S.data.lb[i];
+  const d={id:l['ID Lembur'],mulaiValid:$('vm-'+i).value,selesaiValid:$('vs-'+i).value,catatan:$('vc-'+i).value};
+  muat('Menyimpan…');
+  await jalankan(async()=>{ const r=await api('validasiLembur',d); selesaiMuat(); await pesanBox(r.pesan,'ok'); render(); });
+}
+async function putuskanIzin(i,kep){
+  const r0=S.data.iz[i];
+  if(!(await konfirmasi((kep==='Setujui'?'Izinkan':'Tolak')+' '+r0['Jenis']+' '+r0['Nama']+'?',kep==='Setujui'?'Izinkan':'Tolak',kep==='Setujui'?'hijau':'merah'))) return;
+  muat('Menyimpan…');
+  await jalankan(async()=>{ const r=await api('putuskanIzin',{id:r0['ID Izin'],keputusan:kep}); selesaiMuat(); await pesanBox(r.pesan,'ok'); render(); });
+}
+async function kirimPerintah(){
+  const ids=[...document.querySelectorAll('.pl-k:checked')].map(x=>x.value);
+  if(!ids.length){ pesanBox('Pilih minimal satu karyawan.','error'); return; }
+  const d={ids:ids,tanggal:$('pl-tgl').value,mulai:$('pl-m').value,selesai:$('pl-s').value,alasan:$('pl-a').value.trim()};
+  if(!d.alasan){ pesanBox('Isi pekerjaan lemburnya.','error'); return; }
+  muat('Menyimpan…');
+  await jalankan(async()=>{ const r=await api('perintahLembur',d); selesaiMuat(); await pesanBox(r.pesan,'ok'); S.data.segP='riwayat'; render(); });
+}
+
+/* =====================================================================
+ *  REKAP
+ * ===================================================================== */
+async function viewRekap(){
+  const hari=tglWIB();
+  const dari=S.data.rkDari||hari.slice(0,8)+'01', sampai=S.data.rkSampai||hari;
+  if(!S.karyawan){ try{ S.karyawan=await api('karyawanList'); }catch(e){ S.karyawan=[]; } }
+  const opsi=S.karyawan.filter(k=>k.peran!=='Owner').map(k=>'<option value="'+esc(k.id)+'" '+(S.data.rkId===k.id?'selected':'')+'>'+esc(k.nama)+'</option>').join('');
+  $('app').innerHTML='<h2 class="no-print">📊 Rekap Absensi</h2><div class="kartu no-print">'+
+    '<div class="grid2"><div><label style="margin-top:0">Dari</label><input type="date" id="rk-dari" value="'+dari+'"></div><div><label style="margin-top:0">Sampai</label><input type="date" id="rk-sampai" value="'+sampai+'"></div></div>'+
+    '<label>Karyawan</label><select id="rk-id"><option value="">Semua karyawan</option>'+opsi+'</select>'+
+    '<div class="grid2" style="margin-top:12px"><button class="btn garis" onclick="rkBulanLalu()">Bulan lalu</button><button class="btn" onclick="tampilRekap()">Tampilkan</button></div></div><div id="rk-isi"></div>';
+  if(S.data.rekap) gambarRekap();
+}
+function rkBulanLalu(){
+  const h=tglWIB(); const awalIni=h.slice(0,8)+'01'; const akhirLalu=tambahHari(awalIni,-1);
+  $('rk-dari').value=akhirLalu.slice(0,8)+'01'; $('rk-sampai').value=akhirLalu; tampilRekap();
+}
+async function tampilRekap(){
+  S.data.rkDari=$('rk-dari').value; S.data.rkSampai=$('rk-sampai').value; S.data.rkId=$('rk-id').value;
+  $('rk-isi').innerHTML=memuatHtml('Menghitung rekap…');
+  try{ S.data.rekap=await api('rekap',{dari:S.data.rkDari,sampai:S.data.rkSampai,id:S.data.rkId}); gambarRekap(); }
+  catch(e){ $('rk-isi').innerHTML='<div class="pesan merah">'+esc(e.message)+'</div>'; }
+}
+function gambarRekap(){
+  const r=S.data.rekap;
+  const ring=r.ringkasan.map(x=>'<tr><td><b>'+esc(x.nama)+'</b><br><span class="muted">'+esc(x.bagian)+'</span></td><td>'+x.hariKerja+'</td><td>'+x.hadir+'</td><td>'+x.terlambat+(x.menitTerlambat?'<br><span class="muted">'+x.menitTerlambat+' mnt</span>':'')+'</td>'+
+    '<td>'+x.pulangCepat+(x.pulangCepatDiizinkan?'<br><span class="muted">+'+x.pulangCepatDiizinkan+' izin</span>':'')+'</td><td>'+x.tidakAbsenPulang+'</td><td><b>'+x.tidakHadir+'</b></td><td>'+(x.izin+x.sakit)+'</td><td>'+x.lemburWajibTerlewat+'</td><td><b>'+x.jamLembur+'</b>'+(x.jamLemburBelumValid?'<br><span class="muted">+'+x.jamLemburBelumValid+' blm valid</span>':'')+'</td></tr>').join('');
+  const har=r.harian.map(x=>'<tr><td>'+esc(tglPendek(x.tanggal))+'</td><td>'+esc(x.nama)+'</td><td>'+esc(x.jadwal)+'</td><td>'+esc(x.masuk)+'</td><td>'+esc(x.pulang)+'</td><td>'+chipStatus(x.status)+(x.statusPulang&&x.statusPulang!=='Normal'?' '+chipStatus(x.statusPulang):'')+'</td><td>'+(x.maps?'<a target="_blank" rel="noopener" href="'+esc(x.maps)+'">📍</a>':'')+'</td></tr>').join('');
+  $('rk-isi').innerHTML=
+    '<div class="hanya-cetak"><h2>Rekap Absensi Sam\'s Coffee &amp; Eatery</h2><p>'+esc(tglPanjang(r.dari))+' s/d '+esc(tglPanjang(r.sampai))+' · dicetak '+esc(r.dibuat)+'</p></div>'+
+    '<div class="kartu"><div class="baris no-print"><b>'+esc(tglPendek(r.dari))+' – '+esc(tglPendek(r.sampai))+'</b><span class="muted">'+esc(r.dibuat.slice(11,16))+'</span></div>'+
+    '<div class="scroll-x" style="margin-top:8px"><table><thead><tr><th>Nama</th><th>Hari kerja</th><th>Hadir</th><th>Telat</th><th>Pulang cepat</th><th>Tdk absen pulang</th><th>Tidak hadir</th><th>Izin/ Sakit</th><th>Lembur wajib terlewat</th><th>Jam lembur</th></tr></thead><tbody>'+ring+'</tbody></table></div></div>'+
+    '<div class="grid2 no-print" style="margin-bottom:10px"><button class="btn garis kecil" style="width:100%" onclick="window.print()">🖨️ Cetak / PDF</button><button class="btn garis kecil" style="width:100%" onclick="unduhCSV()">⬇️ Unduh Excel (CSV)</button></div>'+
+    '<button class="btn garis kecil no-print" style="width:100%;margin-bottom:12px" onclick="simpanRekapSheet()">📄 Simpan ke Google Sheet</button>'+
+    '<div class="kartu"><h3 style="margin-top:0">Detail harian</h3><div class="scroll-x"><table><thead><tr><th>Tgl</th><th>Nama</th><th>Jadwal</th><th>Masuk</th><th>Pulang</th><th>Status</th><th>Lok</th></tr></thead><tbody>'+(har||'<tr><td colspan="7">Tidak ada data</td></tr>')+'</tbody></table></div></div>';
+}
+function unduhCSV(){
+  const r=S.data.rekap; if(!r) return;
+  const q=v=>'"'+String(v===undefined||v===null?'':v).replace(/"/g,'""')+'"';
+  let csv='REKAP ABSENSI SAM\'S COFFEE & EATERY;'+r.dari+' s/d '+r.sampai+'\n\n';
+  csv+=['ID','Nama','Bagian','Hari Kerja','Hadir','Terlambat','Menit Terlambat','Pulang Cepat (tanpa izin)','Pulang Cepat (diizinkan)','Tidak Absen Pulang','Tidak Hadir','Izin','Sakit','OFF','Lembur Wajib Terlewat','Jam Lembur Tervalidasi','Jam Lembur Belum Valid'].map(q).join(';')+'\n';
+  r.ringkasan.forEach(x=>{ csv+=[x.id,x.nama,x.bagian,x.hariKerja,x.hadir,x.terlambat,x.menitTerlambat,x.pulangCepat,x.pulangCepatDiizinkan,x.tidakAbsenPulang,x.tidakHadir,x.izin,x.sakit,x.off,x.lemburWajibTerlewat,String(x.jamLembur).replace('.',','),String(x.jamLemburBelumValid).replace('.',',')].map(q).join(';')+'\n'; });
+  csv+='\nDETAIL HARIAN\n'+['Tanggal','ID','Nama','Jadwal','Masuk','Pulang','Status','Status Pulang','Lokasi'].map(q).join(';')+'\n';
+  r.harian.forEach(x=>{ csv+=[x.tanggal,x.id,x.nama,x.jadwal,x.masuk,x.pulang,x.status,x.statusPulang,x.maps].map(q).join(';')+'\n'; });
+  const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Rekap_Absensi_'+r.dari+'_sd_'+r.sampai+'.csv';
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
+}
+async function simpanRekapSheet(){
+  const r=S.data.rekap; if(!r) return;
+  muat('Membuat sheet rekap…');
+  await jalankan(async()=>{
+    const x=await api('buatRekapSheet',{dari:r.dari,sampai:r.sampai,id:S.data.rkId||''}); selesaiMuat();
+    bukaDialog('<div class="hasil-ikon">📄</div><h2 style="text-align:center">Sheet rekap dibuat</h2><p>'+esc(x.pesan)+'</p>'+
+      '<p class="muted">Link di bawah hanya bisa dibuka oleh akun Google pemilik spreadsheet (absensi.samscoffee) atau yang sudah diberi akses.</p>'+
+      '<div class="kol"><a class="btn" target="_blank" rel="noopener" href="'+esc(x.urlSheet)+'">Buka Google Sheet</a>'+
+      '<a class="btn garis" target="_blank" rel="noopener" href="'+esc(x.urlPdf)+'">Unduh PDF</a><a class="btn garis" target="_blank" rel="noopener" href="'+esc(x.urlExcel)+'">Unduh Excel</a>'+
+      '<button class="btn garis" onclick="tutupDialog()">Tutup</button></div>');
+  });
+}
+
+/* =====================================================================
+ *  OWNER — PENGATURAN
+ * ===================================================================== */
+const LABEL_SET={NAMA_USAHA:'Nama usaha',LAT_KAFE:'Latitude titik kafe',LNG_KAFE:'Longitude titik kafe',RADIUS_METER:'Radius absen (meter)',
+  AKURASI_MAKS_METER:'Batas akurasi GPS (meter)',TOLERANSI_TELAT_MENIT:'Toleransi terlambat (menit)',BOLEH_ABSEN_SEBELUM_SHIFT_MENIT:'Boleh absen masuk sebelum shift (menit)',
+  BATAS_PULANG_DINI_HARI:'Batas absen pulang dini hari (jam)',EMAIL_NOTIFIKASI:'Email notifikasi (pisahkan koma)',WA_KONTAK:'Kontak WhatsApp (Nama:628xxx;Nama:628xxx)',MASA_LOGIN_HARI:'Lama login tersimpan (hari)'};
+async function viewPengaturan(){
+  if(S.profil.peran!=='Owner'){ pindahTab('akun'); return; }
+  $('app').innerHTML='<h2>⚙️ Pengaturan Kafe</h2>'+memuatHtml();
+  const d=await api('pengaturanGet'); S.data.set=d;
+  $('app').innerHTML='<button class="btn garis kecil" onclick="pindahTab(\'akun\')">← Kembali</button><h2>⚙️ Pengaturan Kafe</h2>'+
+    '<div class="kartu"><h3 style="margin-top:0">Lokasi & aturan absen</h3>'+
+    d.pengaturan.map(p=>'<label>'+esc(LABEL_SET[p.kunci]||p.kunci)+'</label>'+(p.kunci==='EMAIL_NOTIFIKASI'||p.kunci==='WA_KONTAK'?'<textarea id="set-'+p.kunci+'" style="min-height:70px">'+esc(p.nilai)+'</textarea>':'<input id="set-'+p.kunci+'" value="'+esc(p.nilai)+'">')).join('')+
+    '<button class="btn garis" style="margin-top:12px" onclick="pakaiLokasiSaya()">📍 Pakai lokasi saya sekarang sebagai titik kafe</button>'+
+    '<div id="set-lok"></div></div>'+
+    '<div class="kartu"><h3 style="margin-top:0">Jam shift</h3>'+d.shift.map(s=>'<label>'+esc(s.nama)+' ('+esc(s.kode)+')</label><div class="grid2"><input type="time" id="sm-'+esc(s.kode)+'" value="'+esc(s.mulai==='24:00'?'00:00':s.mulai)+'"><input id="ss-'+esc(s.kode)+'" value="'+esc(s.selesai)+'" placeholder="HH:MM"></div>').join('')+
+    '<p class="muted">Jam selesai 24:00 berarti tengah malam.</p></div>'+
+    '<button class="btn" onclick="simpanPengaturan()">💾 Simpan Pengaturan</button>';
+}
+function pakaiLokasiSaya(){
+  $('set-lok').innerHTML='<div class="pesan biru">Mencari lokasi… (berdiri di tengah area kafe)</div>';
+  navigator.geolocation.getCurrentPosition(p=>{
+    $('set-LAT_KAFE').value=p.coords.latitude.toFixed(7); $('set-LNG_KAFE').value=p.coords.longitude.toFixed(7);
+    $('set-lok').innerHTML='<div class="pesan hijau">Lokasi terisi (akurasi ±'+Math.round(p.coords.accuracy)+' m). Tekan Simpan Pengaturan.</div>';
+  },e=>{ $('set-lok').innerHTML='<div class="pesan merah">Gagal mengambil lokasi: '+esc(e.message)+'</div>'; },{enableHighAccuracy:true,timeout:30000,maximumAge:0});
+}
+async function simpanPengaturan(){
+  const data={}; S.data.set.pengaturan.forEach(p=>{ data[p.kunci]=$('set-'+p.kunci).value; });
+  const shift=S.data.set.shift.map(s=>({kode:s.kode,mulai:$('sm-'+s.kode).value,selesai:$('ss-'+s.kode).value}));
+  muat('Menyimpan…');
+  await jalankan(async()=>{ const r=await api('pengaturanSimpan',{data:data,shift:shift}); selesaiMuat(); await pesanBox(r.pesan,'ok'); render(); });
+}
+
+/* =====================================================================
+ *  OWNER — DATA KARYAWAN
+ * ===================================================================== */
+async function viewKaryawan(){
+  $('app').innerHTML='<h2>👥 Data Karyawan</h2>'+memuatHtml();
+  S.karyawan=await api('karyawanList');
+  const own=S.profil.peran==='Owner';
+  $('app').innerHTML='<button class="btn garis kecil" onclick="pindahTab(\'akun\')">← Kembali</button><h2>👥 Data Karyawan</h2>'+
+    (own?'<button class="btn" style="margin-bottom:12px" onclick="formKaryawan(-1)">➕ Tambah Karyawan</button>':'')+
+    '<div class="kartu"><div class="daftar">'+S.karyawan.map((k,i)=>'<div class="item" '+(own?'onclick="formKaryawan('+i+')" style="cursor:pointer"':'')+'><div class="baris"><b>'+esc(k.nama)+'</b><span class="chip '+(k.aktif==='Ya'?'':'merah')+'">'+esc(k.aktif==='Ya'?k.peran:'Nonaktif')+'</span></div>'+
+      '<div class="muted">'+esc(k.id)+' · '+esc(k.bagian)+(k.namaLengkap?' · '+esc(k.namaLengkap):'')+(k.wajibGantiPin==='Ya'?' · <b>belum ganti PIN awal</b>':'')+'</div></div>').join('')+'</div></div>'+
+    (own?'<p class="muted">Ketuk nama untuk mengubah data atau me-reset PIN. "Nama Panggilan" harus sama persis dengan nama di sheet Jadwal.</p>':'');
+}
+function formKaryawan(i){
+  const baru=i<0, k=baru?{id:'',nama:'',namaLengkap:'',bagian:'Dapur',peran:'Karyawan',jadwalTetap:'',wa:'',email:'',aktif:'Ya'}:S.karyawan[i];
+  const sel=(id,arr,v)=>'<select id="'+id+'">'+arr.map(a=>'<option value="'+esc(a[0])+'" '+(a[0]===v?'selected':'')+'>'+esc(a[1])+'</option>').join('')+'</select>';
+  bukaDialog('<h2>'+(baru?'➕ Karyawan Baru':'✏️ '+esc(k.nama))+'</h2>'+
+    '<label>ID login</label><input id="fk-id" value="'+esc(k.id)+'" '+(baru?'placeholder="contoh: SAM13"':'readonly style="background:#eee"')+'>'+
+    '<label>Nama panggilan (sama dengan di Jadwal)</label><input id="fk-nama" value="'+esc(k.nama)+'" autocapitalize="characters">'+
+    '<label>Nama lengkap</label><input id="fk-nl" value="'+esc(k.namaLengkap)+'">'+
+    '<label>Bagian</label>'+sel('fk-bagian',[['Dapur','Dapur'],['Bar','Bar'],['Waitress','Waitress'],['Kasir','Kasir'],['Manajemen','Manajemen']],k.bagian)+
+    '<label>Peran</label>'+sel('fk-peran',[['Karyawan','Karyawan'],['Manager','Manager'],['Owner','Owner']],k.peran)+
+    '<label>Jadwal tetap</label>'+sel('fk-jt',[['','— ikut sheet Jadwal —'],['PUPU','PUPU (12:00–18:00)'],['YOYO','YOYO (18:00–24:00)']],k.jadwalTetap)+
+    '<label>No. WA</label><input id="fk-wa" inputmode="tel" value="'+esc(k.wa)+'">'+
+    '<label>Email</label><input id="fk-email" type="email" value="'+esc(k.email)+'">'+
+    '<label>Status</label>'+sel('fk-aktif',[['Ya','Aktif'],['Tidak','Nonaktif (sudah keluar)']],k.aktif)+
+    (baru?'<label>PIN awal (4–6 angka)</label><input id="fk-pin" inputmode="numeric" maxlength="6" placeholder="mis. 1234">':'')+
+    '<div id="fk-err"></div><div class="grid2" style="margin-top:12px"><button class="btn garis" onclick="tutupDialog()">Batal</button><button class="btn" onclick="simpanKaryawan('+(baru?1:0)+')">Simpan</button></div>'+
+    (baru?'':'<button class="btn oranye" style="margin-top:10px" onclick="resetPin(\''+esc(k.id)+'\',\''+esc(k.nama)+'\')">🔑 Reset PIN</button>'));
+}
+async function simpanKaryawan(baru){
+  const d={id:$('fk-id').value.trim().toUpperCase(),nama:$('fk-nama').value.trim().toUpperCase(),namaLengkap:$('fk-nl').value.trim(),bagian:$('fk-bagian').value,
+    peran:$('fk-peran').value,jadwalTetap:$('fk-jt').value,wa:$('fk-wa').value.trim(),email:$('fk-email').value.trim(),aktif:$('fk-aktif').value};
+  if(baru) d.pin=$('fk-pin').value.trim();
+  muat('Menyimpan…');
+  try{ const r=await api('karyawanSimpan',{data:d}); selesaiMuat(); tutupDialog(); await pesanBox(r.pesan,'ok'); render(); }
+  catch(e){ selesaiMuat(); $('fk-err').innerHTML='<div class="pesan merah">'+esc(e.message)+'</div>'; }
+}
+async function resetPin(id,nama){
+  tutupDialog();
+  const p=await mintaTeks('Reset PIN '+nama,'Ketik PIN sementara (4–6 angka). '+nama+' wajib menggantinya saat login berikutnya.','mis. 1234',true);
+  if(!p) return;
+  muat('Menyimpan…');
+  await jalankan(async()=>{ const r=await api('resetPin',{id:id,pinBaru:p}); selesaiMuat(); await pesanBox(r.pesan,'ok'); render(); });
+}
+
+/* =====================================================================
+ *  MULAI
+ * ===================================================================== */
+window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); S.pasang=e; if(!S.token||S.tab==='akun') render(); });
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); }); }
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && S.token && S.tab==='beranda' && !$('absen').classList.contains('buka') && !$('dlg').classList.contains('buka')) render(); });
+sinkronWaktu();
+render();
+</script>
+</body>
+</html>

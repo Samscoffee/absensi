@@ -1,0 +1,17 @@
+{
+  "name": "Absensi Sam's Coffee & Eatery",
+  "short_name": "Absen Sam's",
+  "description": "Aplikasi absensi & lembur karyawan Sam's Coffee & Eatery",
+  "lang": "id",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6efe7",
+  "theme_color": "#5b3a24",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
